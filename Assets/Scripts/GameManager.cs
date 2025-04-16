@@ -5,6 +5,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
 
+    [SerializeField] private Ghost[] ghosts;
 
     [SerializeField] private Pacman pacman;
     [SerializeField] private Transform pellets;
@@ -55,6 +56,11 @@ public class GameManager : MonoBehaviour
     private void ResetState()
     {
         // reset pacman state
+        pacman.ResetState();
+
+        foreach (Ghost ghost in ghosts) { 
+            ghost.ResetState();
+        }
 
     }
 
@@ -73,6 +79,23 @@ public class GameManager : MonoBehaviour
     public void PelletEaten(Pellet pellet)
     {
         pellet.gameObject.SetActive(false);
+        SetScore(score + pellet.points);
+        if(HasRemainingPellets() == false)
+        {
+            pacman.gameObject.SetActive(false);
+        }
+    }
+
+    bool HasRemainingPellets()
+    {
+        foreach(Transform pellet in pellets)
+        {
+            if (pellet.gameObject.activeSelf)
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
 }

@@ -7,9 +7,11 @@ public class Pacman : MonoBehaviour
 {
     public Movement movement { get; private set; }
 
+    public static string PACMAN_TAG { get; private set; }
     private void Awake()
     {
         movement = GetComponent<Movement>();
+        PACMAN_TAG = gameObject.tag;
     }
 
     private void Update()
@@ -37,5 +39,12 @@ public class Pacman : MonoBehaviour
     {
         float angle = Mathf.Atan2(direction.y, direction.x);
         transform.rotation = Quaternion.AngleAxis(angle * Mathf.Rad2Deg, Vector3.forward);
+    }
+
+    public void ResetState()
+    {
+        enabled = true;
+        movement.ResetState();
+        gameObject.SetActive(true);
     }
 }
